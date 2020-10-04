@@ -52,6 +52,7 @@ axios.interceptors.response.use(
 
             if (response.data.code < 200 || response.data.code >= 400) {
                 Message.error(response.data.message)
+                return null;
             }
             return Promise.resolve(response);
         } else {

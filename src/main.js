@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
   let user = store.state.user;
   console.log("来到了beforeEach");
   console.log(user);
-  
+
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
     console.log("来到了判断是否为空");
     if (user !== null) { // 通过vuex state获取当前的token是否存在
@@ -66,9 +66,9 @@ router.beforeEach((to, from, next) => {
 })
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
