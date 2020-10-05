@@ -35,7 +35,7 @@
           {{ scope.row.sex }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip class-name="status-col" label="手机号码"  align="center">
+      <el-table-column show-overflow-tooltip class-name="status-col" label="手机号"  align="center">
         <template slot-scope="scope">
           {{ scope.row.phonenumber }}
         </template>
@@ -69,7 +69,7 @@
               <el-button
               size="mini"
               @click="handleMoney(scope.$index, scope.row)"
-              >余额操作</el-button>
+              >钱包</el-button>
               <el-button
               size="mini"
               >账单</el-button>
@@ -129,7 +129,7 @@
     </el-dialog>
 
     <!-- 余额操作 -->
-    <el-dialog :width="dialogWidth" :visible.sync="dialogTableVisible2" v-bind="$attrs" v-on="$listeners" @open="onOpen2" @close="onClose2" title="余额操作">
+    <el-dialog :width="dialogWidth" :visible.sync="dialogTableVisible2" v-bind="$attrs" v-on="$listeners" @open="onOpen2" @close="onClose2" title="钱包">
       <el-form ref="orderForm" :model="order" :rules="orderRules" size="medium" label-width="100px">
         <el-form-item label="操作类型" prop="handleType">
           <el-radio-group v-model="order.handleType" size="medium">
@@ -190,9 +190,9 @@
         <el-form-item label="价格" prop="price">
           <el-input-number v-model="apt.price" placeholder="价格" :precision='2'></el-input-number>
         </el-form-item>
-        <el-form-item label="开始时间" prop="starttime">
+        <el-form-item label="预约时间" prop="starttime">
           <el-date-picker type="datetime" v-model="apt.starttime" format="yyyy-MM-dd HH:mm" @change="pieValue1Change"
-                          value-format="timestamp" :style="{width: '100%'}" placeholder="请选择开始时间">
+                          value-format="timestamp" :style="{width: '100%'}" placeholder="请选择预约时间">
           </el-date-picker>
         </el-form-item>
 <!--        <el-form-item label="结束时间" prop="endtime">-->
@@ -389,7 +389,7 @@ export default {
         }],
         starttime: [{
           required: true,
-          message: '请选择开始时间',
+          message: '请选择预约时间',
           trigger: 'change'
         }],
         endtime: [{
