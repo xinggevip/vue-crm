@@ -154,5 +154,23 @@ export function put(url, params) {
     });
 }
 
+export function del(url, params) {
+  return new Promise((resolve, reject) => {
+    axios.delete(url, params)
+      .then(res => {
+        // console.log("来到了post响应");
+        // console.log(res);
+        if (res.data != null || res.data !==''){
+          resolve(res.data);
+        }
+        resolve(res);
+      }).catch((err) => {
+
+      reject(err);
+    });
+
+  });
+}
+
 
 

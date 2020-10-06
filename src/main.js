@@ -16,13 +16,14 @@ import '@/icons' // icon
 // import '@/permission' // permission control
 
 // 导入封装的axios
-import {get, post, postQs, put} from "./utils/api";
+import {get, post, postQs, put, del} from "./utils/api";
 
 Vue.prototype.$get = get
 Vue.prototype.$post = post
 // post参数会自动序列化
 Vue.prototype.$postQs = postQs
 Vue.prototype.$put = put
+Vue.prototype.$del = del
 
 
 // 引入全局方法
@@ -46,20 +47,20 @@ if (process.env.NODE_ENV === 'production') {
 
 router.beforeEach((to, from, next) => {
   let user = store.state.user;
-  console.log("来到了beforeEach");
-  console.log(user);
+  // console.log("来到了beforeEach");
+  // console.log(user);
 
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    console.log("来到了判断是否为空");
+    // console.log("来到了判断是否为空");
     if (user !== null) { // 通过vuex state获取当前的token是否存在
-      console.log("user不为空");
+      // console.log("user不为空");
       next();
     } else {
-      console.log('该页面需要登陆');
+      // console.log('该页面需要登陆');
       next('/login');
     }
   } else {
-    console.log("没有req,直接跳");
+    // console.log("没有req,直接跳");
     next();
   }
 

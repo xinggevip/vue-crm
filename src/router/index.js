@@ -132,6 +132,52 @@ export const constantRoutes = [
 
     ]
   },
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/emp',
+    alwaysShow: true,
+    name: 'User',
+    meta: { title: '系统管理', icon: 'el-icon-s-help', requireAuth: true },
+    children: [
+      {
+        path: 'emp',
+        name: 'Emp',
+        component: () => import('@/views/system/emp/index'),
+        meta: { title: '员工列表', icon: 'table', requireAuth: true }
+      },
+      {
+        path: 'pay',
+        name: 'Pay',
+        component: () => import('@/views/system/pay/index'),
+        meta: { title: '支付列表', icon: 'table', requireAuth: true }
+      },
+      {
+        path: 'source',
+        name: 'Source',
+        component: () => import('@/views/system/source/index'),
+        meta: { title: '渠道列表', icon: 'table', requireAuth: true }
+      },
+
+    ]
+  },
+  {
+    path: '/charge',
+    component: Layout,
+    redirect: '/charge/out',
+    alwaysShow: true,
+    name: 'User',
+    meta: { title: '账单列表', icon: 'el-icon-s-help', requireAuth: true },
+    children: [
+      {
+        path: 'out',
+        name: 'Out',
+        component: () => import('@/views/charge/out/index'),
+        meta: { title: '消费列表', icon: 'table', requireAuth: true }
+      },
+
+    ]
+  },
 
   // {
   //   path: '/form',
