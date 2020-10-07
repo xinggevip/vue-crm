@@ -20,7 +20,7 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="登记人" >
+      <el-table-column show-overflow-tooltip label="登记人" min-width="60">
         <template slot-scope="scope">
           {{ scope.row.empname }}
         </template>
@@ -56,7 +56,7 @@
           {{ scope.row.comment }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="300"  fixed="right">
+      <el-table-column label="操作" min-width="200"  fixed="right">
           <template slot-scope="scope">
               <el-button
               size="mini"
@@ -72,10 +72,12 @@
               >钱包</el-button>
               <el-button
               size="mini"
+              @click="goZhangDan(scope.$index, scope.row)"
               >账单</el-button>
               <el-button
               size="mini"
               type="danger"
+              @click="handleDel(scope.$index, scope.row)"
               >删除</el-button>
           </template>
       </el-table-column>
@@ -609,7 +611,7 @@ export default {
         }
 
         if (this.order.handleType !== 1) {
-          delete params.paytypeid;
+          params.paytypeid = 5;
           params.moneynum = -(params.moneynum);
         }
 
@@ -682,6 +684,37 @@ export default {
       console.log('end=====' + this.apt.endtime)
       // this.TimeSubStr = this.$dateUtil.intervalTime(this.apt.starttime / 1000, this.apt.endtime / 1000);
     },
+
+    // 删除
+    handleDel(index,row) {
+      this.$confirm('此操作将放永久删除该会员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.delete(index, row);
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    },
+    delete(index, row) {
+      this.$del('/user/' + row.id).then((result) => {
+        if (result.message !== null) {
+          Message.success(result.message);
+        }
+        this.fetchData();
+      }).catch((error) => {
+
+      }).finally();
+    },
+
+    goZhangDan(index, row) {
+      this.$router.push({path:'/system/charge',query: {phonenumber:row.phonenumber}})
+    }
 
 
 

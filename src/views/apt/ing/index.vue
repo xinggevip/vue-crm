@@ -96,9 +96,16 @@
           >结算</el-button>
           <el-button
             size="mini"
-            type="danger"
+            type="warning"
             @click="openIsFangQi(scope.$index, scope.row)"
           >放弃</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDel(scope.$index, scope.row)"
+          >删除</el-button>
+
+
         </template>
       </el-table-column>
     </el-table>
@@ -634,6 +641,33 @@
         }).catch((err) => {
 
         }).finally()
+      },
+
+      // 删除
+      handleDel(index,row) {
+        this.$confirm('此操作将放永久删除这条记录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delete(index, row);
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });
+        });
+      },
+      delete(index, row) {
+        this.$del('/apt/' + row.id).then((result) => {
+          if (result.message !== null) {
+            Message.success(result.message);
+          }
+          this.fetchData();
+        }).catch((error) => {
+
+        }).finally();
       }
 
 

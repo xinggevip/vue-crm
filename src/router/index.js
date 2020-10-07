@@ -158,22 +158,11 @@ export const constantRoutes = [
         component: () => import('@/views/system/source/index'),
         meta: { title: '渠道列表', icon: 'table', requireAuth: true }
       },
-
-    ]
-  },
-  {
-    path: '/charge',
-    component: Layout,
-    redirect: '/charge/out',
-    alwaysShow: true,
-    name: 'User',
-    meta: { title: '账单列表', icon: 'el-icon-s-help', requireAuth: true },
-    children: [
       {
-        path: 'out',
-        name: 'Out',
-        component: () => import('@/views/charge/out/index'),
-        meta: { title: '消费列表', icon: 'table', requireAuth: true }
+        path: 'charge',
+        name: 'Charge',
+        component: () => import('@/views/system/charge/index'),
+        meta: { title: '账单列表', icon: 'table', requireAuth: true }
       },
 
     ]
@@ -251,6 +240,19 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
+
+  {
+    path: '/about',
+    component: Layout,
+    children: [
+      {
+        path: 'about',
+        name: 'About',
+        component: () => import('@/views/about/index'),
+        meta: { title: '关于', icon: 'el-icon-s-help', requireAuth: true }
+      },
+    ]
+  },
 
   {
     path: 'external-link',

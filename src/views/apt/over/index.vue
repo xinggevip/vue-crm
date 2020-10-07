@@ -84,20 +84,12 @@
           {{ scope.row.comment }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="300"  fixed="right">
+      <el-table-column label="操作" min-width="120"  fixed="right">
         <template slot-scope="scope">
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            @click="handleApt(scope.$index, scope.row)"-->
-<!--          >编辑</el-button>-->
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            @click="handleJiesuan(scope.$index, scope.row)"-->
-<!--          >结算</el-button>-->
           <el-button
             size="mini"
             type="danger"
-            @click="openIsFangQi(scope.$index, scope.row)"
+            @click="handleDel(scope.$index, scope.row)"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -606,14 +598,14 @@
         })
       },
 
-      // 是否放弃
-      openIsFangQi(index, row) {
-        this.$confirm('此操作将放弃该用户的预约, 是否继续?', '提示', {
+      // 删除
+      handleDel(index,row) {
+        this.$confirm('此操作将放永久删除这条预约记录及关联账单记录, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.fangQi(index, row);
+          this.delete(index, row);
 
         }).catch(() => {
           this.$message({
@@ -622,18 +614,15 @@
           });
         });
       },
-
-      fangQi(index, row) {
-        row.status = 2;
-        this.$put('/apt', row).then((result) => {
+      delete(index, row) {
+        this.$del('/apt/' + row.id).then((result) => {
           if (result.message !== null) {
             Message.success(result.message);
           }
-
           this.fetchData();
-        }).catch((err) => {
+        }).catch((error) => {
 
-        }).finally()
+        }).finally();
       }
 
 
