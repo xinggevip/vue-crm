@@ -56,8 +56,41 @@
                    :value="item.value" :disabled="item.disabled"></el-option>
       </el-select>
 
-      <el-button type="primary" icon="el-icon-search" size="medium" style="margin-right:15px;" @click="fetchData()">搜索</el-button>
+      <el-button type="primary" icon="el-icon-search" size="medium"  @click="fetchData()">搜索</el-button>
+      <el-button type="primary" size="medium" @click="isShow">{{countShowTitle}}</el-button>
     </div>
+
+    <el-collapse-transition>
+      <div v-show="countShow">
+        <p class="countMoneyAndNum">
+          <el-table
+            v-loading="listLoading2"
+            :data="list2"
+            element-loading-text="Loading"
+            border
+            fit
+            highlight-current-row
+          >
+            <el-table-column show-overflow-tooltip  label="账单类型" >
+              <template slot-scope="scope">
+                {{ scope.row.name }}
+              </template>
+            </el-table-column>
+            <el-table-column show-overflow-tooltip label="笔数" >
+              <template slot-scope="scope">
+                {{ scope.row.number }}
+              </template>
+            </el-table-column>
+            <el-table-column show-overflow-tooltip label="共计" >
+              <template slot-scope="scope">
+                <span>{{ scope.row.money }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </p>
+      </div>
+    </el-collapse-transition>
+
 
 
     <el-table
@@ -262,7 +295,11 @@
       return {
         TimeSubStr:'',
         list: null,
+        list2:null,
         listLoading: false,
+        listLoading2:false,
+        countShow:false,
+        countShowTitle:"显示汇总",
         // 分页配置
         pageSetting:{
           'page-sizes':[5, 10, 15, 20],
@@ -481,6 +518,60 @@
         }).catch((err) => {
 
         }).finally(() => this.listLoading = false);
+
+        if (this.countShow) {
+          this.getCountInfo();
+        }
+
+
+      },
+      isShow() {
+        if (!this.countShow) {
+          this.getCountInfo();
+        }
+        this.countShow = !this.countShow;
+        if (this.countShow) {
+          this.countShowTitle = "隐藏汇总"
+        }else {
+          this.countShowTitle = "显示汇总"
+        }
+      },
+      getCountInfo() {
+        this.listLoading2 = true
+        this.$post('/charge/getcount', this.page).then((result) => {
+          this.list2 = [];
+          let item1 = {
+            name:"余额充值",
+            number:result.data.chongMoneyNum,
+            money:result.data.chongMoney
+          };
+          this.list2.push(item1);
+
+          let item2 = {
+            name:"房间消费",
+            number:result.data.roomMoneyNum,
+            money:result.data.roomMoney
+          };
+          this.list2.push(item2);
+
+          let item3 = {
+            name:"其他消费",
+            number:result.data.otherMoneyNum,
+            money:result.data.otherMoney
+          };
+          this.list2.push(item3);
+
+          let item4 = {
+            name:"汇总",
+            number:result.data.allMoneyNum,
+            money:result.data.allMoney
+          };
+          this.list2.push(item4);
+
+          // console.log(result);
+        }).catch((err) => {
+
+        }).finally(() => this.listLoading2 = false);
       },
       // 设置对话框大小
       setDialogWidth() {
@@ -651,6 +742,9 @@
   }
 </script>
 <style rel="stylesheet/scss" lang="scss">
+  .countMoneyAndNum{
+    padding-bottom: 15px;
+  }
   .search::after,.search::before{
     content: '';
     display: table;

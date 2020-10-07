@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">高公子客户管理系统</h3>
+      <h3 class="title">零纪元VR-CRM</h3>
       <el-form-item prop="phonenumber">
         <el-input v-model="loginForm.phonenumber" type="text" auto-complete="off" placeholder="手机号">
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
@@ -18,7 +18,7 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      
+
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
@@ -34,7 +34,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2019 qiagssvip.com All Rights Reserved.</span>
+      <span>Copyright © 2020-{{year}} 高公子 All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -45,6 +45,7 @@ export default {
   name: "Login",
   data() {
     return {
+      year:new Date().getFullYear(),
       loading:false,
       codeUrl: "",
       cookiePassword: "",
@@ -78,8 +79,8 @@ export default {
                 let objStr = JSON.stringify(response.data);
                 this.$store.commit('SET_USER', objStr);
                 this.$message.success('登陆成功');
-                
-                
+
+
                 setTimeout(()=>{
                   window.location.href='/';
                 }, 1000);

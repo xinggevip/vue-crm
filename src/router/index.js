@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '高公子CRM', icon: 'dashboard', requireAuth: true }
+      meta: { title: '零纪元VR-CRM', icon: 'dashboard', requireAuth: true }
     }]
   },
 
@@ -157,6 +157,11 @@ export const constantRoutes = [
         name: 'Source',
         component: () => import('@/views/system/source/index'),
         meta: { title: '渠道列表', icon: 'table', requireAuth: true }
+      },{
+        path: 'room',
+        name: 'Room',
+        component: () => import('@/views/system/room/index'),
+        meta: { title: '房间列表', icon: 'table', requireAuth: true }
       },
       {
         path: 'charge',
@@ -164,6 +169,7 @@ export const constantRoutes = [
         component: () => import('@/views/system/charge/index'),
         meta: { title: '账单列表', icon: 'table', requireAuth: true }
       },
+
 
     ]
   },

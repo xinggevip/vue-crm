@@ -79,19 +79,21 @@
           <span>{{ timeSizeFormatter(scope.row) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center">
+      <el-table-column label="备注" align="center" min-width="120">
         <template slot-scope="scope">
           {{ scope.row.comment }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="300"  fixed="right">
+      <el-table-column label="操作" min-width="290"  fixed="right">
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="primary"
             @click="handleApt(scope.$index, scope.row)"
           >编辑</el-button>
           <el-button
             size="mini"
+            type="success"
             @click="handleJiesuan(scope.$index, scope.row)"
           >结算</el-button>
           <el-button

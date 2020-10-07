@@ -60,18 +60,22 @@
           <template slot-scope="scope">
               <el-button
               size="mini"
+              type="primary"
               @click="handleEdit(scope.$index, scope.row)"
               >编辑</el-button>
               <el-button
               size="mini"
+              type="success"
               @click="handleApt(scope.$index, scope.row)"
               >预约</el-button>
               <el-button
               size="mini"
+              type="info"
               @click="handleMoney(scope.$index, scope.row)"
               >钱包</el-button>
               <el-button
               size="mini"
+              type="warning"
               @click="goZhangDan(scope.$index, scope.row)"
               >账单</el-button>
               <el-button
@@ -601,6 +605,12 @@ export default {
     handelConfirm2() {
       this.$refs['orderForm'].validate(valid => {
         if (!valid) return
+
+        if (this.order.moneynum <= 0) {
+          Message.error("金额不能小于等于0！")
+          return
+        }
+
         this.loading = true;
         let params = {
           "comment": this.order.comment,
