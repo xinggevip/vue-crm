@@ -320,7 +320,7 @@
           "value": 2
         }],
         flagOptions: [{
-          "label": "充值",
+          "label": "余额充值",
           "value": 1
         }, {
           "label": "其他消费",

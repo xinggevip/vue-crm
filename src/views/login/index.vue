@@ -50,8 +50,8 @@ export default {
       codeUrl: "",
       cookiePassword: "",
       loginForm: {
-        phonenumber: "15937067033",
-        password: "123456",
+        phonenumber: "",
+        password: "",
       },
       loginRules: {
         phonenumber: [
