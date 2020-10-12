@@ -15,47 +15,47 @@
       fit
       highlight-current-row
     >
-      <el-table-column show-overflow-tooltip align="center" label="ID" width="95">
+      <el-table-column show-overflow-tooltip align="center" label="ID" width="50">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="登记人" >
+      <el-table-column show-overflow-tooltip label="登记人" min-width="30">
         <template slot-scope="scope">
           {{ scope.row.empname }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="会员名"  align="center">
+      <el-table-column show-overflow-tooltip label="会员名"  align="center" min-width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="性别"  align="center">
+      <el-table-column show-overflow-tooltip label="性别"  align="center" min-width="30">
         <template slot-scope="scope">
           {{ scope.row.sex }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip class-name="status-col" label="手机号" min-width="120"  align="center">
+      <el-table-column show-overflow-tooltip class-name="status-col" label="手机号" min-width="70"  align="center">
         <template slot-scope="scope">
           {{ scope.row.phonenumber }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="渠道"  align="center">
+      <el-table-column show-overflow-tooltip label="渠道"  align="center" min-width="40">
         <template slot-scope="scope">
           {{ scope.row.sourcename }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="房间"  align="center">
+      <el-table-column show-overflow-tooltip label="房间"  align="center" min-width="40">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="人数"  align="center">
+      <el-table-column show-overflow-tooltip label="人数"  align="center" min-width="30">
         <template slot-scope="scope">
           {{ scope.row.personnum }}
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="价格"  align="center">
+      <el-table-column show-overflow-tooltip label="价格"  align="center" min-width="40">
         <template slot-scope="scope">
           {{ scope.row.price }}
         </template>
@@ -67,16 +67,22 @@
       <!--        </template>-->
       <!--      </el-table-column>-->
 
-      <el-table-column show-overflow-tooltip align="center" prop="created_at" label="预约时间" min-width="150" >
+      <el-table-column show-overflow-tooltip align="center" prop="created_at" label="预约时间" min-width="90" >
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ dateFormatter(scope.row.starttime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip align="center" prop="created_at" label="时长" min-width="130" >
+      <el-table-column show-overflow-tooltip align="center" prop="created_at" label="时长" min-width="80" >
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ timeSizeFormatter(scope.row) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column show-overflow-tooltip align="center" prop="created_at" label="剩余时长" min-width="100" >
+        <template slot-scope="scope">
+          <i class="el-icon-time" />
+          <span>{{ scope.row.countdown }}</span>
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center">
@@ -84,7 +90,7 @@
           {{ scope.row.comment }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="120"  fixed="right">
+      <el-table-column label="操作" min-width="60"  fixed="right">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -364,6 +370,8 @@
           "value": 2
         }],
 
+        timer: '',
+
 
 
 
@@ -400,8 +408,26 @@
       fetchData() {
         this.listLoading = true
         this.$post('/apt/getlist', this.page).then((result) => {
+
+          result.data.list.forEach((item, index, arr) => {
+            item.countdown = ''
+          });
+
           this.list = result.data.list;
           this.pageSetting.total = result.data.total;
+
+          this.timer = setInterval(() => {
+            this.list.forEach((item, index, arr) => {
+              item.countdown =  this.$dateUtil.intervalTime2(new Date().getTime() / 1000, item.endtime / 1000);
+            })
+            if(this.list.every(item => item.countdown == "游玩已结束")) {
+              clearInterval(this.timer)
+            }
+          },1000)
+
+
+
+
           // console.log(result);
         }).catch((err) => {
 
@@ -489,6 +515,14 @@
         // console.log(row.starttime)
         // console.log(row.endtime)
         return this.$dateUtil.intervalTime(row.starttime / 1000, row.endtime / 1000);
+      },
+      // 计算剩余时长
+      remainingTime(row, column) {
+        //setInterval 每隔1000ms执行一次
+        // var j = setInterval(()=>{
+        //   console.log(column)
+        //   // return this.$dateUtil.intervalTime(row.starttime / 1000, row.endtime / 1000);
+        // },1000)
       },
       // 设置每页显示多少条
       handleSizeChange(val) {
